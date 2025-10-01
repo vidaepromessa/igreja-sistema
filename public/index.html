@@ -29,7 +29,6 @@
             color: var(--secondary);
         }
 
-        /* Header e Navegação */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -85,14 +84,12 @@
             background-color: var(--accent);
         }
 
-        /* Container Principal */
         .container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
 
-        /* Cards de Seção */
         .section-title {
             font-size: 2rem;
             margin-bottom: 2rem;
@@ -137,7 +134,6 @@
             line-height: 1.6;
         }
 
-        /* Tabelas */
         .table-container {
             background: white;
             border-radius: 12px;
@@ -168,7 +164,6 @@
             background-color: rgba(49, 130, 206, 0.05);
         }
 
-        /* Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -195,7 +190,6 @@
             margin: 1rem 0;
         }
 
-        /* Botões */
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -229,7 +223,14 @@
             background-color: #dd6b20;
         }
 
-        /* Formulários */
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c53030;
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -256,27 +257,22 @@
             margin-top: 2rem;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             .nav-menu {
                 flex-direction: column;
                 gap: 0.5rem;
             }
-            
             .header {
                 padding: 1rem;
             }
-            
             .container {
                 padding: 0 1rem;
             }
-            
             .section-title {
                 font-size: 1.5rem;
             }
         }
 
-        /* Abas */
         .tabs {
             display: flex;
             gap: 1rem;
@@ -307,10 +303,17 @@
         .tab-content.active {
             display: block;
         }
+
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
-    <!-- Cabeçalho -->
     <header class="header">
         <div class="logo-container">
             <div class="logo">
@@ -332,40 +335,31 @@
     </header>
 
     <main class="container">
-        <!-- Home -->
         <section id="home">
             <h1 class="section-title">Bem-vindo ao Sistema de Gestão</h1>
             <div class="cards-grid">
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
                     <h3>Cadastros</h3>
-                    <p>Gerencie fiéis, membros e igrejas com facilidade.</p>
+                    <p>Membros, pastores, igrejas.</p>
                     <a href="#cadastros" class="btn">Acessar</a>
                 </div>
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-money-bill-wave"></i></div>
                     <h3>Financeiro</h3>
-                    <p>Controle completo de receitas e despesas.</p>
+                    <p>Receitas e despesas.</p>
                     <a href="#financeiro" class="btn">Acessar</a>
                 </div>
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
                     <h3>Atividades</h3>
-                    <p>Organize cultos, eventos e reuniões.</p>
+                    <p>Cultos e eventos.</p>
                     <a href="#atividades" class="btn">Acessar</a>
                 </div>
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
                     <h3>Relatórios</h3>
-                    <p>Visualize dados e gráficos importantes.</p>
+                    <p>Dados e gráficos.</p>
                     <a href="#relatorios" class="btn">Acessar</a>
                 </div>
             </div>
@@ -374,122 +368,126 @@
         <!-- Cadastros -->
         <section id="cadastros">
             <h2 class="section-title">Cadastros</h2>
+            
+            <!-- Membros com Endereço -->
+            <div class="form-container">
+                <h3>Adicionar Novo Membro</h3>
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="membro-nome" placeholder="Ex: João Silva">
+                </div>
+                <div class="form-group">
+                    <label>Cargo</label>
+                    <input type="text" id="membro-cargo" value="Membro">
+                </div>
+                <div class="form-group">
+                    <label>Estado Civil</label>
+                    <select id="membro-estado-civil">
+                        <option>Solteiro(a)</option>
+                        <option>Casado(a)</option>
+                        <option>Divorciado(a)</option>
+                        <option>Viúvo(a)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data de Batismo</label>
+                    <input type="date" id="membro-batismo">
+                </div>
+                <div class="form-group">
+                    <label>Contato</label>
+                    <input type="text" id="membro-contato" placeholder="(11) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label>Endereço</label>
+                    <input type="text" id="membro-endereco" placeholder="Rua, número, bairro, cidade">
+                </div>
+                <button class="btn" onclick="adicionarMembro()">Adicionar Membro</button>
+            </div>
+
+            <!-- Igrejas -->
+            <div class="form-container">
+                <h3>Cadastrar Nova Igreja</h3>
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="igreja-nome" placeholder="Ex: Sede Central">
+                </div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="igreja-tipo">
+                        <option>Sede</option>
+                        <option>Congregação</option>
+                        <option>Ponto de Pregação</option>
+                        <option>Célula</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Localização</label>
+                    <input type="text" id="igreja-localizacao" placeholder="Endereço completo">
+                </div>
+                <div class="form-group">
+                    <label>Responsável</label>
+                    <input type="text" id="igreja-responsavel" placeholder="Nome do responsável">
+                </div>
+                <div class="form-group">
+                    <label>Contato</label>
+                    <input type="text" id="igreja-contato" placeholder="(11) 99999-9999">
+                </div>
+                <button class="btn" onclick="adicionarIgreja()">Cadastrar Igreja</button>
+            </div>
+
+            <!-- Pastores -->
+            <div class="form-container">
+                <h3>Cadastrar Pastor</h3>
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="pastor-nome" placeholder="Ex: Pastor Carlos">
+                </div>
+                <div class="form-group">
+                    <label>Contato</label>
+                    <input type="text" id="pastor-contato" placeholder="(11) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label>Igreja</label>
+                    <select id="pastor-igreja">
+                        <option value="">Selecione uma igreja</option>
+                        <!-- Será preenchido automaticamente -->
+                    </select>
+                </div>
+                <button class="btn" onclick="adicionarPastor()">Cadastrar Pastor</button>
+            </div>
+
             <div class="tabs">
-                <button class="tab-btn active" data-tab="fieis">Fiéis</button>
-                <button class="tab-btn" data-tab="membros">Membros</button>
+                <button class="tab-btn active" data-tab="membros">Membros</button>
+                <button class="tab-btn" data-tab="pastores">Pastores</button>
                 <button class="tab-btn" data-tab="igrejas">Igrejas</button>
             </div>
 
-            <div id="fieis" class="tab-content active">
+            <div id="membros" class="tab-content active">
                 <div class="table-container">
-                    <h3>Controle de Fiéis</h3>
-                    <p>Fiéis que frequentam, mas ainda não são membros.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Telefone</th>
-                                <th>Endereço</th>
-                                <th>Data de Nascimento</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Maria Silva</td>
-                                <td>(11) 99999-9999</td>
-                                <td>Rua A, 123 - São Paulo/SP</td>
-                                <td>15/03/1985</td>
-                                <td>
-                                    <button class="btn btn-success">Tornar Membro</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>João Santos</td>
-                                <td>(11) 88888-8888</td>
-                                <td>Av. B, 456 - São Paulo/SP</td>
-                                <td>22/07/1990</td>
-                                <td>
-                                    <button class="btn btn-success">Tornar Membro</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <h3>Cadastro de Membros</h3>
+                    <table id="tabela-membros">
+                        <thead><tr><th>Nome</th><th>Cargo</th><th>Estado Civil</th><th>Batismo</th><th>Contato</th><th>Endereço</th></tr></thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
 
-            <div id="membros" class="tab-content">
+            <div id="pastores" class="tab-content">
                 <div class="table-container">
-                    <h3>Cadastro de Membros</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Cargo</th>
-                                <th>Estado Civil</th>
-                                <th>Batismo</th>
-                                <th>Contato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Pastor Carlos Oliveira</td>
-                                <td>Pastor</td>
-                                <td>Casado</td>
-                                <td>10/01/2010</td>
-                                <td>(11) 77777-7777</td>
-                            </tr>
-                            <tr>
-                                <td>Diana Costa</td>
-                                <td>Líder</td>
-                                <td>Solteira</td>
-                                <td>15/05/2018</td>
-                                <td>(11) 66666-6666</td>
-                            </tr>
-                            <tr>
-                                <td>Rafael Mendes</td>
-                                <td>Obreiro</td>
-                                <td>Casado</td>
-                                <td>20/09/2020</td>
-                                <td>(11) 55555-5555</td>
-                            </tr>
-                        </tbody>
+                    <h3>Pastores</h3>
+                    <table id="tabela-pastores">
+                        <thead><tr><th>Nome</th><th>Contato</th><th>Igreja</th></tr></thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
 
             <div id="igrejas" class="tab-content">
                 <div class="table-container">
-                    <h3>Congregações e Pontos de Pregação</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Localização</th>
-                                <th>Responsável</th>
-                                <th>Contato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Sede Central</td>
-                                <td>Rua Principal, 100 - São Paulo/SP</td>
-                                <td>Pastor Carlos Oliveira</td>
-                                <td>(11) 77777-7777</td>
-                            </tr>
-                            <tr>
-                                <td>Congregação Zona Norte</td>
-                                <td>Av. Norte, 200 - São Paulo/SP</td>
-                                <td>Diana Costa</td>
-                                <td>(11) 66666-6666</td>
-                            </tr>
-                            <tr>
-                                <td>Ponto de Pregação Leste</td>
-                                <td>Rua Leste, 300 - São Paulo/SP</td>
-                                <td>Rafael Mendes</td>
-                                <td>(11) 55555-5555</td>
-                            </tr>
-                        </tbody>
+                    <h3>Igrejas</h3>
+                    <table id="tabela-igrejas">
+                        <thead><tr><th>Nome</th><th>Tipo</th><th>Localização</th><th>Responsável</th><th>Contato</th></tr></thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -498,65 +496,42 @@
         <!-- Financeiro -->
         <section id="financeiro">
             <h2 class="section-title">Cadastro Financeiro</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-plus-circle" style="color: var(--success);"></i>
-                    </div>
-                    <h3>Receitas</h3>
-                    <p>Dízimos, ofertas, eventos, doações</p>
+            
+            <div class="form-container">
+                <h3>Novo Lançamento</h3>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="fin-data">
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-minus-circle" style="color: var(--danger);"></i>
-                    </div>
-                    <h3>Despesas</h3>
-                    <p>Contas fixas, eventos, manutenções</p>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="fin-tipo" onchange="atualizarCategorias()">
+                        <option value="Receita">Receita</option>
+                        <option value="Despesa">Despesa</option>
+                    </select>
                 </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="fin-categoria">
+                        <!-- Será preenchido automaticamente -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" step="0.01" id="fin-valor" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Observações</label>
+                    <textarea id="fin-obs" rows="2"></textarea>
+                </div>
+                <button class="btn" onclick="adicionarFinanca()">Adicionar Lançamento</button>
             </div>
 
             <div class="table-container">
                 <h3>Controle Financeiro</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Tipo</th>
-                            <th>Categoria</th>
-                            <th>Valor</th>
-                            <th>Observações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>01/12/2024</td>
-                            <td>Receita</td>
-                            <td>Dízimos</td>
-                            <td>R$ 2.500,00</td>
-                            <td>Recebimento mensal</td>
-                        </tr>
-                        <tr>
-                            <td>05/12/2024</td>
-                            <td>Receita</td>
-                            <td>Ofertas</td>
-                            <td>R$ 800,00</td>
-                            <td>Culto de domingo</td>
-                        </tr>
-                        <tr>
-                            <td>10/12/2024</td>
-                            <td>Despesa</td>
-                            <td>Conta de Energia</td>
-                            <td>R$ 450,00</td>
-                            <td>Fatura de novembro</td>
-                        </tr>
-                        <tr>
-                            <td>15/12/2024</td>
-                            <td>Despesa</td>
-                            <td>Evento</td>
-                            <td>R$ 1.200,00</td>
-                            <td>Confraternização de fim de ano</td>
-                        </tr>
-                    </tbody>
+                <table id="tabela-financa">
+                    <thead><tr><th>Data</th><th>Tipo</th><th>Categoria</th><th>Valor</th><th>Observações</th></tr></thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </section>
@@ -564,48 +539,37 @@
         <!-- Atividades -->
         <section id="atividades">
             <h2 class="section-title">Atividades</h2>
+            
+            <div class="form-container">
+                <h3>Adicionar Nova Atividade</h3>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="ativ-data">
+                </div>
+                <div class="form-group">
+                    <label>Horário</label>
+                    <input type="time" id="ativ-horario">
+                </div>
+                <div class="form-group">
+                    <label>Atividade</label>
+                    <input type="text" id="ativ-nome" placeholder="Ex: Culto Dominical...">
+                </div>
+                <div class="form-group">
+                    <label>Local</label>
+                    <input type="text" id="ativ-local" placeholder="Ex: Sede Central...">
+                </div>
+                <div class="form-group">
+                    <label>Responsável</label>
+                    <input type="text" id="ativ-responsavel" placeholder="Ex: Pastor Carlos...">
+                </div>
+                <button class="btn" onclick="adicionarAtividade()">Adicionar Atividade</button>
+            </div>
+
             <div class="table-container">
                 <h3>Registro de Cultos, Eventos e Reuniões</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Horário</th>
-                            <th>Atividade</th>
-                            <th>Local</th>
-                            <th>Responsável</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>08/12/2024</td>
-                            <td>19:00</td>
-                            <td>Culto Dominical</td>
-                            <td>Sede Central</td>
-                            <td>Pastor Carlos</td>
-                        </tr>
-                        <tr>
-                            <td>12/12/2024</td>
-                            <td>20:00</td>
-                            <td>Reunião de Líderes</td>
-                            <td>Sede Central</td>
-                            <td>Diana Costa</td>
-                        </tr>
-                        <tr>
-                            <td>18/12/2024</td>
-                            <td>19:30</td>
-                            <td>Culto de Natal</td>
-                            <td>Sede Central</td>
-                            <td>Pastor Carlos</td>
-                        </tr>
-                        <tr>
-                            <td>20/12/2024</td>
-                            <td>20:00</td>
-                            <td>Confraternização</td>
-                            <td>Salão Paroquial</td>
-                            <td>Rafael Mendes</td>
-                        </tr>
-                    </tbody>
+                <table id="tabela-atividades">
+                    <thead><tr><th>Data</th><th>Horário</th><th>Atividade</th><th>Local</th><th>Responsável</th><th>Ações</th></tr></thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </section>
@@ -613,156 +577,541 @@
         <!-- Relatórios -->
         <section id="relatorios">
             <h2 class="section-title">Relatórios</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
+            
+            <div class="dashboard-grid" id="relatorio-cards">
+                <div class="dashboard-card">
                     <h3>Fluxo de Caixa</h3>
-                    <p>Consolidação de entradas e saídas com saldo por período.</p>
+                    <div class="metric" id="saldo-total">R$ 0,00</div>
+                    <p><strong>Receitas:</strong> R$ <span id="total-receitas">0,00</span></p>
+                    <p><strong>Despesas:</strong> R$ <span id="total-despesas">0,00</span></p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
-                    </div>
-                    <h3>Receitas</h3>
-                    <p>Resumo das entradas por categoria.</p>
+                <div class="dashboard-card">
+                    <h3>Receitas por Categoria</h3>
+                    <ul id="lista-receitas" style="list-style: none; padding: 0;">
+                        <li>Nenhuma receita registrada</li>
+                    </ul>
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-arrow-down" style="color: var(--danger);"></i>
-                    </div>
-                    <h3>Despesas</h3>
-                    <p>Resumo das saídas por categoria.</p>
+                <div class="dashboard-card">
+                    <h3>Despesas por Categoria</h3>
+                    <ul id="lista-despesas" style="list-style: none; padding: 0;">
+                        <li>Nenhuma despesa registrada</li>
+                    </ul>
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <h3>Gráficos</h3>
-                    <p>Representações visuais de receitas, despesas e saldos.</p>
+                <div class="dashboard-card">
+                    <h3>Gráfico Simples</h3>
+                    <p>Receitas: <span id="barra-receitas" style="display: inline-block; background: var(--success); height: 20px; width: 0%;"></span></p>
+                    <p>Despesas: <span id="barra-despesas" style="display: inline-block; background: var(--danger); height: 20px; width: 0%;"></span></p>
                 </div>
             </div>
         </section>
 
-        <!-- Dashboard -->
+        <!-- Dashboard FUNCIONAL -->
         <section id="dashboard">
             <h2 class="section-title">Dashboard</h2>
             <div class="dashboard-grid">
                 <div class="dashboard-card">
-                    <h3>Receitas do Mês</h3>
-                    <div class="metric">R$ 3.300,00</div>
-                    <p>+12% em relação ao mês anterior</p>
+                    <h3>Membros</h3>
+                    <div class="metric" id="total-membros">0</div>
                 </div>
                 <div class="dashboard-card">
-                    <h3>Despesas do Mês</h3>
-                    <div class="metric">R$ 1.650,00</div>
-                    <p>-5% em relação ao mês anterior</p>
+                    <h3>Pastores</h3>
+                    <div class="metric" id="total-pastores">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Igrejas</h3>
+                    <div class="metric" id="total-igrejas">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Atividades</h3>
+                    <div class="metric" id="total-atividades">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Receitas</h3>
+                    <div class="metric" id="dashboard-receitas">R$ 0,00</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Despesas</h3>
+                    <div class="metric" id="dashboard-despesas">R$ 0,00</div>
                 </div>
                 <div class="dashboard-card">
                     <h3>Saldo Final</h3>
-                    <div class="metric">R$ 1.650,00</div>
-                    <p>Saldo positivo</p>
+                    <div class="metric" id="dashboard-saldo">R$ 0,00</div>
                 </div>
-            </div>
-
-            <div class="table-container">
-                <h3>Resumo Financeiro - Dezembro/2024</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Categoria</th>
-                            <th>Receitas</th>
-                            <th>Despesas</th>
-                            <th>Saldo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Dízimos</td>
-                            <td>R$ 2.500,00</td>
-                            <td>-</td>
-                            <td>R$ 2.500,00</td>
-                        </tr>
-                        <tr>
-                            <td>Ofertas</td>
-                            <td>R$ 800,00</td>
-                            <td>-</td>
-                            <td>R$ 800,00</td>
-                        </tr>
-                        <tr>
-                            <td>Contas Fixas</td>
-                            <td>-</td>
-                            <td>R$ 450,00</td>
-                            <td>-R$ 450,00</td>
-                        </tr>
-                        <tr>
-                            <td>Eventos</td>
-                            <td>-</td>
-                            <td>R$ 1.200,00</td>
-                            <td>-R$ 1.200,00</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Total</strong></td>
-                            <td><strong>R$ 3.300,00</strong></td>
-                            <td><strong>R$ 1.650,00</strong></td>
-                            <td><strong>R$ 1.650,00</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </section>
     </main>
 
     <script>
-        // Navegação por abas
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove classe active de todos os botões
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                // Adiciona classe active ao botão clicado
-                button.classList.add('active');
-                
-                // Esconde todos os conteúdos
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Mostra o conteúdo correspondente
-                const tabId = button.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    // Abas
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            button.classList.add('active');
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(tabId)?.classList.add('active');
         });
+    });
 
-        // Navegação suave
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Atualiza a classe active no menu
-                    document.querySelectorAll('.nav-menu a').forEach(link => {
-                        link.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                }
-            });
+    // Navegação suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                document.querySelectorAll('.nav-menu a').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            }
         });
+    });
 
-        // Simular botão "Tornar Membro"
-        document.querySelectorAll('.btn-success').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Fiel promovido a membro com sucesso!');
-            });
+    // --- CATEGORIAS FIXAS ---
+    function atualizarCategorias() {
+    const tipoSelect = document.getElementById('fin-tipo');
+    const categoriaSelect = document.getElementById('fin-categoria');
+    
+    if (!tipoSelect || !categoriaSelect) return;
+
+    const tipo = tipoSelect.value;
+    let categorias = [];
+
+    if (tipo === 'Receita') {
+        categorias = ['Dízimos', 'Ofertas', 'Envelope branco', 'Cantina', 'Outras'];
+    } else {
+        categorias = ['Aluguel', 'Auxílio ao membro', 'Ajuda de custo', 'Manutenção', 'Eletricidade', 'Agua', 'Outras'];
+    }
+
+    // Salvar categoria atual se existir
+    const categoriaAtual = categoriaSelect.value;
+
+    // Limpar e preencher
+    categoriaSelect.innerHTML = '';
+    categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        categoriaSelect.appendChild(option);
+    });
+
+    // Tentar manter a categoria anterior se for compatível
+    if (categorias.includes(categoriaAtual)) {
+        categoriaSelect.value = categoriaAtual;
+    }
+}
+
+    // --- MEMBROS ---
+    window.adicionarMembro = function() {
+        const nome = document.getElementById('membro-nome')?.value.trim();
+        if (!nome) {
+            alert('⚠️ Preencha o nome.');
+            return;
+        }
+        const membro = {
+            nome: nome,
+            cargo: document.getElementById('membro-cargo')?.value.trim() || 'Membro',
+            estado_civil: document.getElementById('membro-estado-civil')?.value || 'Solteiro(a)',
+            batismo: document.getElementById('membro-batismo')?.value || '',
+            contato: document.getElementById('membro-contato')?.value.trim() || '',
+            endereco: document.getElementById('membro-endereco')?.value.trim() || ''
+        };
+
+        fetch('/api/membros', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(membro)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Membro adicionado com sucesso!');
+            document.getElementById('membro-nome').value = '';
+            document.getElementById('membro-contato').value = '';
+            document.getElementById('membro-endereco').value = '';
+            carregarMembros();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar. Verifique o console (F12).');
         });
+    };
+
+    function carregarMembros() {
+        fetch('/api/membros')
+        .then(res => res.json())
+        .then(membros => {
+            const tbody = document.querySelector('#tabela-membros tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            membros.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${m.nome}</td><td>${m.cargo}</td><td>${m.estado_civil}</td><td>${m.batismo}</td><td>${m.contato}</td><td>${m.endereco}</td>`;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error('Erro ao carregar membros:', err));
+    }
+
+    // --- IGREJAS ---
+    window.adicionarIgreja = function() {
+        const nome = document.getElementById('igreja-nome')?.value.trim();
+        if (!nome) {
+            alert('⚠️ Preencha o nome da igreja.');
+            return;
+        }
+        const igreja = {
+            nome: nome,
+            tipo: document.getElementById('igreja-tipo')?.value || 'Sede',
+            localizacao: document.getElementById('igreja-localizacao')?.value.trim() || '',
+            responsavel: document.getElementById('igreja-responsavel')?.value.trim() || '',
+            contato: document.getElementById('igreja-contato')?.value.trim() || ''
+        };
+
+        fetch('/api/igrejas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(igreja)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Igreja cadastrada!');
+            document.getElementById('igreja-nome').value = '';
+            document.getElementById('igreja-localizacao').value = '';
+            carregarIgrejas();
+            carregarPastores();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar.');
+        });
+    };
+
+    function carregarIgrejas() {
+        fetch('/api/igrejas')
+        .then(res => res.json())
+        .then(igrejas => {
+            const tbody = document.querySelector('#tabela-igrejas tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            igrejas.forEach(i => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${i.nome}</td><td>${i.tipo}</td><td>${i.localizacao}</td><td>${i.responsavel}</td><td>${i.contato}</td>`;
+                tbody.appendChild(tr);
+            });
+
+            // Atualiza select de pastores
+            const select = document.getElementById('pastor-igreja');
+            if (select) {
+                select.innerHTML = '<option value="">Selecione uma igreja</option>';
+                igrejas.forEach(i => {
+                    const opt = document.createElement('option');
+                    opt.value = i.id;
+                    opt.textContent = `${i.nome} (${i.tipo})`;
+                    select.appendChild(opt);
+                });
+            }
+        })
+        .catch(err => console.error('Erro ao carregar igrejas:', err));
+    }
+
+    // --- PASTORES ---
+    window.adicionarPastor = function() {
+        const nome = document.getElementById('pastor-nome')?.value.trim();
+        if (!nome) {
+            alert('⚠️ Preencha o nome do pastor.');
+            return;
+        }
+        const pastor = {
+            nome: nome,
+            contato: document.getElementById('pastor-contato')?.value.trim() || '',
+            igreja_id: document.getElementById('pastor-igreja')?.value || null
+        };
+
+        fetch('/api/pastores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pastor)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Pastor cadastrado!');
+            document.getElementById('pastor-nome').value = '';
+            document.getElementById('pastor-contato').value = '';
+            carregarPastores();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar.');
+        });
+    };
+
+    function carregarPastores() {
+        fetch('/api/pastores')
+        .then(res => res.json())
+        .then(pastores => {
+            const tbody = document.querySelector('#tabela-pastores tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            pastores.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${p.nome}</td><td>${p.contato}</td><td>${p.igreja || 'Não vinculado'}</td>`;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error('Erro ao carregar pastores:', err));
+    }
+
+    // --- FINANÇAS ---
+    window.adicionarFinanca = function() {
+        const data = document.getElementById('fin-data')?.value;
+        const valor = document.getElementById('fin-valor')?.value;
+        if (!data || !valor) {
+            alert('⚠️ Preencha data e valor.');
+            return;
+        }
+        const financa = {
+             data,
+            tipo: document.getElementById('fin-tipo')?.value || 'Receita',
+            categoria: document.getElementById('fin-categoria')?.value || 'Outras',
+            valor: parseFloat(valor),
+            observacoes: document.getElementById('fin-obs')?.value.trim() || ''
+        };
+
+        fetch('/api/financa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(financa)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Lançamento adicionado!');
+            document.getElementById('fin-valor').value = '';
+            document.getElementById('fin-obs').value = '';
+            carregarFinancas();
+            carregarRelatorios();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar.');
+        });
+    };
+
+    function carregarFinancas() {
+        fetch('/api/financa')
+        .then(res => res.json())
+        .then(financas => {
+            const tbody = document.querySelector('#tabela-financa tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            financas.forEach(f => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${f.data}</td><td>${f.tipo}</td><td>${f.categoria}</td><td>R$ ${f.valor.toFixed(2)}</td><td>${f.observacoes}</td>`;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error('Erro ao carregar finanças:', err));
+    }
+
+    // --- ATIVIDADES ---
+    window.adicionarAtividade = function() {
+        const data = document.getElementById('ativ-data')?.value;
+        const atividade = document.getElementById('ativ-nome')?.value.trim();
+        if (!data || !atividade) {
+            alert('⚠️ Preencha Data e Atividade.');
+            return;
+        }
+        const atividadeData = {
+             data,
+            horario: document.getElementById('ativ-horario')?.value || '',
+            atividade: atividade,
+            local: document.getElementById('ativ-local')?.value.trim() || '',
+            responsavel: document.getElementById('ativ-responsavel')?.value.trim() || ''
+        };
+
+        fetch('/api/atividades', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(atividadeData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Atividade adicionada!');
+            document.getElementById('ativ-data').value = '';
+            document.getElementById('ativ-nome').value = '';
+            carregarAtividades();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar.');
+        });
+    };
+
+    window.excluirAtividade = function(id) {
+        if (!confirm('Tem certeza que deseja excluir esta atividade?')) return;
+        fetch(`/api/atividades/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (res.ok) {
+                alert('✅ Atividade excluída!');
+                carregarAtividades();
+                carregarDashboard();
+            } else {
+                alert('❌ Erro ao excluir.');
+            }
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Falha na exclusão.');
+        });
+    };
+
+    function carregarAtividades() {
+        fetch('/api/atividades')
+        .then(res => res.json())
+        .then(atividades => {
+            const tbody = document.querySelector('#tabela-atividades tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            atividades.forEach(a => {
+                const dataFmt = a.data ? a.data.split('-').reverse().join('/') : '';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dataFmt}</td>
+                    <td>${a.horario || ''}</td>
+                    <td>${a.atividade}</td>
+                    <td>${a.local || ''}</td>
+                    <td>${a.responsavel || ''}</td>
+                    <td><button class="btn btn-danger" onclick="excluirAtividade(${a.id})">Excluir</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error('Erro ao carregar atividades:', err));
+    }
+
+    // --- RELATÓRIOS ---
+    function carregarRelatorios() {
+        // Fluxo de caixa
+        fetch('/api/relatorios/fluxo-caixa')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('total-receitas').textContent = data.receitas.toFixed(2).replace('.', ',');
+            document.getElementById('total-despesas').textContent = data.despesas.toFixed(2).replace('.', ',');
+            document.getElementById('saldo-total').textContent = `R$ ${data.saldo.toFixed(2).replace('.', ',')}`;
+            
+            const max = Math.max(data.receitas, data.despesas, 1);
+            document.getElementById('barra-receitas').style.width = `${(data.receitas / max) * 100}%`;
+            document.getElementById('barra-despesas').style.width = `${(data.despesas / max) * 100}%`;
+        })
+        .catch(err => console.error('Erro no fluxo de caixa:', err));
+
+        // Receitas por categoria
+        fetch('/api/relatorios/receitas')
+        .then(res => res.json())
+        .then(receitas => {
+            const ul = document.getElementById('lista-receitas');
+            if (!ul) return;
+            if (receitas.length === 0) {
+                ul.innerHTML = '<li>Nenhuma receita registrada</li>';
+            } else {
+                ul.innerHTML = receitas.map(r => 
+                    `<li>${r.categoria}: R$ ${r.total.toFixed(2).replace('.', ',')}</li>`
+                ).join('');
+            }
+        })
+        .catch(err => console.error('Erro nas receitas:', err));
+
+        // Despesas por categoria
+        fetch('/api/relatorios/despesas')
+        .then(res => res.json())
+        .then(despesas => {
+            const ul = document.getElementById('lista-despesas');
+            if (!ul) return;
+            if (despesas.length === 0) {
+                ul.innerHTML = '<li>Nenhuma despesa registrada</li>';
+            } else {
+                ul.innerHTML = despesas.map(d => 
+                    `<li>${d.categoria}: R$ ${d.total.toFixed(2).replace('.', ',')}</li>`
+                ).join('');
+            }
+        })
+        .catch(err => console.error('Erro nas despesas:', err));
+    }
+
+    // --- DASHBOARD FUNCIONAL E CLICÁVEL ---
+    function carregarDashboard() {
+        fetch('/api/dashboard')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('total-membros').textContent = data.membros;
+            document.getElementById('total-pastores').textContent = data.pastores;
+            document.getElementById('total-igrejas').textContent = data.igrejas;
+            document.getElementById('total-atividades').textContent = data.atividades;
+            document.getElementById('dashboard-receitas').textContent = `R$ ${data.receitas.toFixed(2).replace('.', ',')}`;
+            document.getElementById('dashboard-despesas').textContent = `R$ ${data.despesas.toFixed(2).replace('.', ',')}`;
+            document.getElementById('dashboard-saldo').textContent = `R$ ${data.saldo.toFixed(2).replace('.', ',')}`;
+        })
+        .catch(err => console.error('Erro no dashboard:', err));
+    }
+
+    // Tornar cards do dashboard clicáveis
+    document.getElementById('total-membros').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#cadastros"]').click();
+        setTimeout(() => {
+            document.querySelector('.tab-btn[data-tab="membros"]').click();
+        }, 300);
+    });
+
+    document.getElementById('total-pastores').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#cadastros"]').click();
+        setTimeout(() => {
+            document.querySelector('.tab-btn[data-tab="pastores"]').click();
+        }, 300);
+    });
+
+    document.getElementById('total-igrejas').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#cadastros"]').click();
+        setTimeout(() => {
+            document.querySelector('.tab-btn[data-tab="igrejas"]').click();
+        }, 300);
+    });
+
+    document.getElementById('total-atividades').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#atividades"]').click();
+    });
+
+    document.getElementById('dashboard-receitas').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#financeiro"]').click();
+    });
+
+    document.getElementById('dashboard-despesas').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#financeiro"]').click();
+    });
+
+    document.getElementById('dashboard-saldo').closest('.dashboard-card').addEventListener('click', () => {
+        document.querySelector('a[href="#relatorios"]').click();
+    });
+
+    // Carregar tudo ao iniciar
+    atualizarCategorias(); // ← Inicializa as categorias
+    carregarMembros();
+    carregarIgrejas();
+    carregarPastores();
+    carregarFinancas();
+    carregarAtividades();
+    carregarRelatorios();
+    carregarDashboard();
+    
+        // Garantir que as categorias atualizem ao mudar o tipo
+    const tipoSelect = document.getElementById('fin-tipo');
+    if (tipoSelect) {
+        tipoSelect.addEventListener('change', atualizarCategorias);
+    }
+});
     </script>
 </body>
 </html>
