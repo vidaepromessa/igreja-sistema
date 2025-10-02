@@ -866,55 +866,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- FINANÇAS ---
     window.adicionarFinanca = function() {
-        const data = document.getElementById('fin-data')?.value;
-        const valor = document.getElementById('fin-valor')?.value;
-        if (!data || !valor) {
-            alert('⚠️ Preencha data e valor.');
-            return;
-        }
-        const financa = {
-             data,
-            tipo: document.getElementById('fin-tipo')?.value || 'Receita',
-            categoria: document.getElementById('fin-categoria')?.value || 'Outras',
-            valor: parseFloat(valor),
-            observacoes: document.getElementById('fin-obs')?.value.trim() || ''
-        };
-
-        fetch('/api/financa', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(financa)
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert('✅ Lançamento adicionado!');
-            document.getElementById('fin-valor').value = '';
-            document.getElementById('fin-obs').value = '';
-            carregarFinancas();
-            carregarRelatorios();
-            carregarDashboard();
-        })
-        .catch(err => {
-            console.error('Erro:', err);
-            alert('❌ Erro ao salvar.');
-        });
+    const data = document.getElementById('fin-data')?.value;
+    const valor = document.getElementById('fin-valor')?.value;
+    if (!data || !valor) {
+        alert('⚠️ Preencha data e valor.');
+        return;
+    }
+    const financa = {
+         data,
+        tipo: document.getElementById('fin-tipo')?.value || 'Receita',
+        categoria: document.getElementById('fin-categoria')?.value || 'Outras',
+        valor: parseFloat(valor),
+        observacoes: document.getElementById('fin-obs')?.value.trim() || ''
     };
 
+    fetch('/api/financa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(financa)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert('✅ Lançamento adicionado!');
+        document.getElementById('fin-valor').value = '';
+        document.getElementById('fin-obs').value = '';
+        // Atualizar TUDO
+        carregarFinancas();      // ← Atualiza a tabela principal
+        carregarRelatorios();    // ← Atualiza os relatórios
+        carregarDashboard();     // ← Atualiza o dashboard
+    })
+    .catch(err => {
+        console.error('Erro:', err);
+        alert('❌ Erro ao salvar.');
+    });
+};
+
     function carregarFinancas() {
-        fetch('/api/financa')
-        .then(res => res.json())
-        .then(financas => {
-            const tbody = document.querySelector('#tabela-financa tbody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            financas.forEach(f => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${f.data}</td><td>${f.tipo}</td><td>${f.categoria}</td><td>R$ ${f.valor.toFixed(2)}</td><td>${f.observacoes}</td>`;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(err => console.error('Erro ao carregar finanças:', err));
-    }
+    fetch('/api/financa')
+    .then(res => res.json())
+    .then(financas => {
+        const tbody = document.querySelector('#tabela-financa tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        financas.forEach(f => {
+            const valorNumerico = parseFloat(f.valor) || 0;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${f.data}</td><td>${f.tipo}</td><td>${f.categoria}</td><td>R$ ${valorNumerico.toFixed(2)}</td><td>${f.observacoes}</td>`;
+            tbody.appendChild(tr);
+        });
+    })
+    .catch(err => console.error('Erro ao carregar finanças:', err));
+}
 
     // --- ATIVIDADES ---
     window.adicionarAtividade = function() {
@@ -1105,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarAtividades();
     carregarRelatorios();
     carregarDashboard();
-    
+
         // Garantir que as categorias atualizem ao mudar o tipo
     const tipoSelect = document.getElementById('fin-tipo');
     if (tipoSelect) {
