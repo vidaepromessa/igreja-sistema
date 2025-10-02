@@ -46,7 +46,7 @@ async function criarTabelas() {
       id SERIAL PRIMARY KEY,
       nome TEXT NOT NULL,
       contato TEXT,
-      igreja_id INTEGER REFERENCES igrejas(id)
+      igreja_id INTEGER REFERENCES igrejas(id) ON DELETE SET NULL
     )
   `);
 
@@ -75,32 +75,6 @@ async function criarTabelas() {
 
 // Criar tabelas ao iniciar
 criarTabelas().catch(console.error);
-
-// --- API: Finanças ---
-app.get('/api/financa', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM financa');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Erro em /api/financa:', err);
-    res.status(500).json({ error: 'Erro no servidor' });
-  }
-});
-
-app.post('/api/financa', async (req, res) => {
-  const { data, tipo, categoria, valor, observacoes } = req.body;
-  try {
-    const result = await pool.query(
-      `INSERT INTO financa (data, tipo, categoria, valor, observacoes) 
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [data || '', tipo || 'Receita', categoria || 'Outras', parseFloat(valor) || 0, observacoes || '']
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Erro ao salvar finança:', err);
-    res.status(500).json({ error: 'Erro ao salvar' });
-  }
-});
 
 // --- API: Membros ---
 app.get('/api/membros', async (req, res) => {
@@ -131,6 +105,19 @@ app.post('/api/membros', async (req, res) => {
   }
 });
 
+app.delete('/api/membros/:id', async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM membros WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Membro não encontrado' });
+    }
+    res.json({ message: 'Membro excluído com sucesso' });
+  } catch (err) {
+    console.error('Erro ao excluir membro:', err);
+    res.status(500).json({ error: 'Erro ao excluir' });
+  }
+});
+
 // --- API: Igrejas ---
 app.get('/api/igrejas', async (req, res) => {
   try {
@@ -154,6 +141,23 @@ app.post('/api/igrejas', async (req, res) => {
   } catch (err) {
     console.error('Erro ao salvar igreja:', err);
     res.status(500).json({ error: 'Erro ao salvar' });
+  }
+});
+
+app.delete('/api/igrejas/:id', async (req, res) => {
+  try {
+    // Primeiro, remover referências em pastores
+    await pool.query('UPDATE pastores SET igreja_id = NULL WHERE igreja_id = $1', [req.params.id]);
+    
+    // Depois, excluir a igreja
+    const result = await pool.query('DELETE FROM igrejas WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Igreja não encontrada' });
+    }
+    res.json({ message: 'Igreja excluída com sucesso' });
+  } catch (err) {
+    console.error('Erro ao excluir igreja:', err);
+    res.status(500).json({ error: 'Erro ao excluir' });
   }
 });
 
@@ -187,6 +191,58 @@ app.post('/api/pastores', async (req, res) => {
   }
 });
 
+app.delete('/api/pastores/:id', async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM pastores WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Pastor não encontrado' });
+    }
+    res.json({ message: 'Pastor excluído com sucesso' });
+  } catch (err) {
+    console.error('Erro ao excluir pastor:', err);
+    res.status(500).json({ error: 'Erro ao excluir' });
+  }
+});
+
+// --- API: Finanças ---
+app.get('/api/financa', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM financa');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro em /api/financa:', err);
+    res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
+
+app.post('/api/financa', async (req, res) => {
+  const { data, tipo, categoria, valor, observacoes } = req.body;
+  try {
+    const result = await pool.query(
+      `INSERT INTO financa (data, tipo, categoria, valor, observacoes) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [data || '', tipo || 'Receita', categoria || 'Outras', parseFloat(valor) || 0, observacoes || '']
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao salvar finança:', err);
+    res.status(500).json({ error: 'Erro ao salvar' });
+  }
+});
+
+app.delete('/api/financa/:id', async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM financa WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Lançamento não encontrado' });
+    }
+    res.json({ message: 'Lançamento excluído com sucesso' });
+  } catch (err) {
+    console.error('Erro ao excluir finança:', err);
+    res.status(500).json({ error: 'Erro ao excluir' });
+  }
+});
+
 // --- API: Atividades ---
 app.get('/api/atividades', async (req, res) => {
   try {
@@ -215,8 +271,11 @@ app.post('/api/atividades', async (req, res) => {
 
 app.delete('/api/atividades/:id', async (req, res) => {
   try {
-    await pool.query('DELETE FROM atividades WHERE id = $1', [req.params.id]);
-    res.json({ message: 'Excluído' });
+    const result = await pool.query('DELETE FROM atividades WHERE id = $1', [req.params.id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Atividade não encontrada' });
+    }
+    res.json({ message: 'Atividade excluída com sucesso' });
   } catch (err) {
     console.error('Erro ao excluir atividade:', err);
     res.status(500).json({ error: 'Erro ao excluir' });
@@ -299,4 +358,25 @@ app.get('/api/dashboard', async (req, res) => {
     ]);
 
     res.json({
-      membros: parseInt(membros.rows[0].total || 
+      membros: parseInt(membros.rows[0].total || 0),
+      pastores: parseInt(pastores.rows[0].total || 0),
+      igrejas: parseInt(igrejas.rows[0].total || 0),
+      atividades: parseInt(atividades.rows[0].total || 0),
+      receitas: parseFloat(financa.rows[0].receitas || 0),
+      despesas: parseFloat(financa.rows[0].despesas || 0),
+      saldo: parseFloat((financa.rows[0].receitas || 0) - (financa.rows[0].despesas || 0))
+    });
+  } catch (err) {
+    console.error('Erro em /api/dashboard:', err);
+    res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
+
+// Servir o frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Sistema rodando em http://localhost:${PORT}`);
+});

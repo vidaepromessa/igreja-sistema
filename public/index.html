@@ -466,7 +466,7 @@
                 <div class="table-container">
                     <h3>Cadastro de Membros</h3>
                     <table id="tabela-membros">
-                        <thead><tr><th>Nome</th><th>Cargo</th><th>Estado Civil</th><th>Batismo</th><th>Contato</th><th>Endereço</th></tr></thead>
+                        <thead><tr><th>Nome</th><th>Cargo</th><th>Estado Civil</th><th>Batismo</th><th>Contato</th><th>Endereço</th><th>Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -476,7 +476,7 @@
                 <div class="table-container">
                     <h3>Pastores</h3>
                     <table id="tabela-pastores">
-                        <thead><tr><th>Nome</th><th>Contato</th><th>Igreja</th></tr></thead>
+                        <thead><tr><th>Nome</th><th>Contato</th><th>Igreja</th><th>Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -486,7 +486,7 @@
                 <div class="table-container">
                     <h3>Igrejas</h3>
                     <table id="tabela-igrejas">
-                        <thead><tr><th>Nome</th><th>Tipo</th><th>Localização</th><th>Responsável</th><th>Contato</th></tr></thead>
+                        <thead><tr><th>Nome</th><th>Tipo</th><th>Localização</th><th>Responsável</th><th>Contato</th><th>Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -530,7 +530,7 @@
             <div class="table-container">
                 <h3>Controle Financeiro</h3>
                 <table id="tabela-financa">
-                    <thead><tr><th>Data</th><th>Tipo</th><th>Categoria</th><th>Valor</th><th>Observações</th></tr></thead>
+                    <thead><tr><th>Data</th><th>Tipo</th><th>Categoria</th><th>Valor</th><th>Observações</th><th>Ações</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -669,37 +669,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- CATEGORIAS FIXAS ---
     function atualizarCategorias() {
-    const tipoSelect = document.getElementById('fin-tipo');
-    const categoriaSelect = document.getElementById('fin-categoria');
-    
-    if (!tipoSelect || !categoriaSelect) return;
+        const tipoSelect = document.getElementById('fin-tipo');
+        const categoriaSelect = document.getElementById('fin-categoria');
+        
+        if (!tipoSelect || !categoriaSelect) return;
 
-    const tipo = tipoSelect.value;
-    let categorias = [];
+        const tipo = tipoSelect.value;
+        let categorias = [];
 
-    if (tipo === 'Receita') {
-        categorias = ['Dízimos', 'Ofertas', 'Envelope branco', 'Cantina', 'Outras'];
-    } else {
-        categorias = ['Aluguel', 'Auxílio ao membro', 'Ajuda de custo', 'Manutenção', 'Eletricidade', 'Agua', 'Outras'];
+        if (tipo === 'Receita') {
+            categorias = ['Dízimos', 'Ofertas', 'Envelope branco', 'Cantina', 'Outras'];
+        } else {
+            categorias = ['Aluguel', 'Auxílio ao membro', 'Ajuda de custo', 'Manutenção', 'Eletricidade', 'Agua', 'Outras'];
+        }
+
+        // Salvar categoria atual se existir
+        const categoriaAtual = categoriaSelect.value;
+
+        // Limpar e preencher
+        categoriaSelect.innerHTML = '';
+        categorias.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            categoriaSelect.appendChild(option);
+        });
+
+        // Tentar manter a categoria anterior se for compatível
+        if (categorias.includes(categoriaAtual)) {
+            categoriaSelect.value = categoriaAtual;
+        }
     }
-
-    // Salvar categoria atual se existir
-    const categoriaAtual = categoriaSelect.value;
-
-    // Limpar e preencher
-    categoriaSelect.innerHTML = '';
-    categorias.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        categoriaSelect.appendChild(option);
-    });
-
-    // Tentar manter a categoria anterior se for compatível
-    if (categorias.includes(categoriaAtual)) {
-        categoriaSelect.value = categoriaAtual;
-    }
-}
 
     // --- MEMBROS ---
     window.adicionarMembro = function() {
@@ -737,6 +737,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    window.excluirMembro = function(id) {
+        if (!confirm('Tem certeza que deseja excluir este membro?')) return;
+        fetch(`/api/membros/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (res.ok) {
+                alert('✅ Membro excluído!');
+                carregarMembros();
+                carregarDashboard();
+            } else {
+                alert('❌ Erro ao excluir.');
+            }
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Falha na exclusão.');
+        });
+    };
+
     function carregarMembros() {
         fetch('/api/membros')
         .then(res => res.json())
@@ -746,7 +764,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = '';
             membros.forEach(m => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${m.nome}</td><td>${m.cargo}</td><td>${m.estado_civil}</td><td>${m.batismo}</td><td>${m.contato}</td><td>${m.endereco}</td>`;
+                tr.innerHTML = `<td>${m.nome}</td><td>${m.cargo}</td><td>${m.estado_civil}</td><td>${m.batismo}</td><td>${m.contato}</td><td>${m.endereco}</td><td><button class="btn btn-danger" onclick="excluirMembro(${m.id})">Excluir</button></td>`;
                 tbody.appendChild(tr);
             });
         })
@@ -788,6 +806,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    window.excluirIgreja = function(id) {
+        if (!confirm('Tem certeza que deseja excluir esta igreja?')) return;
+        fetch(`/api/igrejas/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (res.ok) {
+                alert('✅ Igreja excluída!');
+                carregarIgrejas();
+                carregarPastores();
+                carregarDashboard();
+            } else {
+                alert('❌ Erro ao excluir.');
+            }
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Falha na exclusão.');
+        });
+    };
+
     function carregarIgrejas() {
         fetch('/api/igrejas')
         .then(res => res.json())
@@ -797,7 +834,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = '';
             igrejas.forEach(i => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${i.nome}</td><td>${i.tipo}</td><td>${i.localizacao}</td><td>${i.responsavel}</td><td>${i.contato}</td>`;
+                tr.innerHTML = `<td>${i.nome}</td><td>${i.tipo}</td><td>${i.localizacao}</td><td>${i.responsavel}</td><td>${i.contato}</td><td><button class="btn btn-danger" onclick="excluirIgreja(${i.id})">Excluir</button></td>`;
                 tbody.appendChild(tr);
             });
 
@@ -848,6 +885,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    window.excluirPastor = function(id) {
+        if (!confirm('Tem certeza que deseja excluir este pastor?')) return;
+        fetch(`/api/pastores/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (res.ok) {
+                alert('✅ Pastor excluído!');
+                carregarPastores();
+                carregarDashboard();
+            } else {
+                alert('❌ Erro ao excluir.');
+            }
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Falha na exclusão.');
+        });
+    };
+
     function carregarPastores() {
         fetch('/api/pastores')
         .then(res => res.json())
@@ -857,7 +912,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = '';
             pastores.forEach(p => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${p.nome}</td><td>${p.contato}</td><td>${p.igreja || 'Não vinculado'}</td>`;
+                tr.innerHTML = `<td>${p.nome}</td><td>${p.contato}</td><td>${p.igreja || 'Não vinculado'}</td><td><button class="btn btn-danger" onclick="excluirPastor(${p.id})">Excluir</button></td>`;
                 tbody.appendChild(tr);
             });
         })
@@ -866,57 +921,99 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- FINANÇAS ---
     window.adicionarFinanca = function() {
-    const data = document.getElementById('fin-data')?.value;
-    const valor = document.getElementById('fin-valor')?.value;
-    if (!data || !valor) {
-        alert('⚠️ Preencha data e valor.');
-        return;
-    }
-    const financa = {
-         data,
-        tipo: document.getElementById('fin-tipo')?.value || 'Receita',
-        categoria: document.getElementById('fin-categoria')?.value || 'Outras',
-        valor: parseFloat(valor),
-        observacoes: document.getElementById('fin-obs')?.value.trim() || ''
+        const data = document.getElementById('fin-data')?.value;
+        const valor = document.getElementById('fin-valor')?.value;
+        if (!data || !valor) {
+            alert('⚠️ Preencha data e valor.');
+            return;
+        }
+        const financa = {
+             data,
+            tipo: document.getElementById('fin-tipo')?.value || 'Receita',
+            categoria: document.getElementById('fin-categoria')?.value || 'Outras',
+            valor: parseFloat(valor),
+            observacoes: document.getElementById('fin-obs')?.value.trim() || ''
+        };
+
+        fetch('/api/financa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(financa)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('✅ Lançamento adicionado!');
+            document.getElementById('fin-valor').value = '';
+            document.getElementById('fin-obs').value = '';
+            carregarFinancas();
+            carregarRelatorios();
+            carregarDashboard();
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Erro ao salvar.');
+        });
     };
 
-    fetch('/api/financa', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(financa)
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert('✅ Lançamento adicionado!');
-        document.getElementById('fin-valor').value = '';
-        document.getElementById('fin-obs').value = '';
-        // Atualizar TUDO
-        carregarFinancas();      // ← Atualiza a tabela principal
-        carregarRelatorios();    // ← Atualiza os relatórios
-        carregarDashboard();     // ← Atualiza o dashboard
-    })
-    .catch(err => {
-        console.error('Erro:', err);
-        alert('❌ Erro ao salvar.');
-    });
-};
+    window.excluirFinanca = function(id) {
+        if (!confirm('Tem certeza que deseja excluir este lançamento?')) return;
+        fetch(`/api/financa/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (res.ok) {
+                alert('✅ Lançamento excluído!');
+                carregarFinancas();
+                carregarRelatorios();
+                carregarDashboard();
+            } else {
+                alert('❌ Erro ao excluir.');
+            }
+        })
+        .catch(err => {
+            console.error('Erro:', err);
+            alert('❌ Falha na exclusão.');
+        });
+    };
 
     function carregarFinancas() {
-    fetch('/api/financa')
-    .then(res => res.json())
-    .then(financas => {
-        const tbody = document.querySelector('#tabela-financa tbody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        financas.forEach(f => {
-            const valorNumerico = parseFloat(f.valor) || 0;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${f.data}</td><td>${f.tipo}</td><td>${f.categoria}</td><td>R$ ${valorNumerico.toFixed(2)}</td><td>${f.observacoes}</td>`;
-            tbody.appendChild(tr);
+        fetch('/api/financa')
+        .then(res => res.json())
+        .then(financas => {
+            const tbody = document.querySelector('#tabela-financa tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            financas.forEach(f => {
+                // Tratamento SEGURO do valor - resolve o erro .toFixed
+                let valorFormatado = '0,00';
+                try {
+                    const num = parseFloat(f.valor);
+                    if (!isNaN(num)) {
+                        valorFormatado = num.toFixed(2).replace('.', ',');
+                    }
+                } catch (e) {
+                    // Mantém '0,00' se der erro
+                }
+                
+                const dataFormatada = f.data ? f.data.split('-').reverse().join('/') : '';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dataFormatada}</td>
+                    <td>${f.tipo || ''}</td>
+                    <td>${f.categoria || ''}</td>
+                    <td>R$ ${valorFormatado}</td>
+                    <td>${f.observacoes || ''}</td>
+                    <td><button class="btn btn-danger" onclick="excluirFinanca(${f.id})">Excluir</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao carregar finanças:', err);
+            const tbody = document.querySelector('#tabela-financa tbody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="6">Erro ao carregar dados.</td></tr>';
+            }
         });
-    })
-    .catch(err => console.error('Erro ao carregar finanças:', err));
-}
+    }
 
     // --- ATIVIDADES ---
     window.adicionarAtividade = function() {
@@ -1098,8 +1195,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('a[href="#relatorios"]').click();
     });
 
+    // Garantir que as categorias atualizem ao mudar o tipo
+    const tipoSelect = document.getElementById('fin-tipo');
+    if (tipoSelect) {
+        tipoSelect.addEventListener('change', atualizarCategorias);
+    }
+
     // Carregar tudo ao iniciar
-    atualizarCategorias(); // ← Inicializa as categorias
+    atualizarCategorias();
     carregarMembros();
     carregarIgrejas();
     carregarPastores();
@@ -1107,12 +1210,6 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarAtividades();
     carregarRelatorios();
     carregarDashboard();
-
-        // Garantir que as categorias atualizem ao mudar o tipo
-    const tipoSelect = document.getElementById('fin-tipo');
-    if (tipoSelect) {
-        tipoSelect.addEventListener('change', atualizarCategorias);
-    }
 });
     </script>
 </body>
