@@ -1,11 +1,9 @@
 const { Pool } = require('pg');
 
-// Usa DATABASE_URL do Render em produção, ou um banco local em desenvolvimento
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/igreja_db'
 });
 
-// Cria as tabelas ao iniciar
 async function criarTabelas() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS membros (
